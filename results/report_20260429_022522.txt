@@ -1,0 +1,148 @@
+====================================================================
+  SATELLITE IMAGE CLASSIFICATION REPORT
+  Generated : 2026-04-29 02:25:22
+  Mode      : Supervised — SVM (RBF)
+====================================================================
+
+1. DATASETS
+--------------------------------------------------
+
+  Landsat 8/9 OLI
+    File       : Landsat9_Powai_Vihar_Single.tif
+    Size       : 260 x 298 pixels
+    Bands      : 4
+    Spatial    : 0.0 m/pixel
+    Data type  : float64
+    CRS        : GEOGCS["WGS 84",DATUM["World Geodetic System 1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST]]
+
+  Sentinel-2 MSI L2A
+    File       : Sentinel2_Powai_Vihar_Single.tif
+    Size       : 780 x 891 pixels
+    Bands      : 4
+    Spatial    : 0.0 m/pixel
+    Data type  : uint16
+    CRS        : GEOGCS["WGS 84",DATUM["World Geodetic System 1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST]]
+
+2. CLASSES
+--------------------------------------------------
+  [0] Water                 LS: 49  ST: 61
+  [1] Vegetation            LS: 52  ST: 65
+  [2] Urban/Built-up        LS: 64  ST: 58
+  [3] Bare Soil             LS: 19  ST: 15
+
+3. RESULTS
+--------------------------------------------------
+
+  LANDSAT
+    Split             : 70% train / 30% test (stratified)
+    Training pixels   : 1159
+    Test pixels       : 497
+    CV accuracy       : 0.9810 +/- 0.0084
+    CV folds          : 0.970 | 0.978 | 0.978 | 0.983 | 0.996
+
+    Accuracy Assessment  (evaluated on held-out 30% test set):
+      Overall Accuracy (OA) : 0.9839  (98.39%)
+      Kappa Coefficient     : 0.9775
+      CV Accuracy (mean)    : 0.9810 +/- 0.0084
+
+    Error Matrix  (rows = True class,  cols = Predicted class)
+      PA = Producer's Accuracy (Recall)   UA = User's Accuracy (Precision)
+      Class                      Water  VegetationUrban/Built-   Bare Soil      PA
+      ------------------------------------------------------------------------------
+      Water                        131           1           0           0  99.2%
+      Vegetation                     0         140           1           0  99.3%
+      Urban/Built-up                 1           2         170           0  98.3%
+      Bare Soil                      0           3           0          48  94.1%
+      ------------------------------------------------------------------------------
+      UA                         99.2%       95.9%       99.4%      100.0%
+
+    Per-class report (sklearn):
+                      precision    recall  f1-score   support
+      
+               Water       0.99      0.99      0.99       132
+          Vegetation       0.96      0.99      0.98       141
+      Urban/Built-up       0.99      0.98      0.99       173
+           Bare Soil       1.00      0.94      0.97        51
+      
+            accuracy                           0.98       497
+           macro avg       0.99      0.98      0.98       497
+        weighted avg       0.98      0.98      0.98       497
+
+  SENTINEL-2
+    Split             : 70% train / 30% test (stratified)
+    Training pixels   : 1253
+    Test pixels       : 538
+    CV accuracy       : 0.9816 +/- 0.0060
+    CV folds          : 0.976 | 0.976 | 0.992 | 0.984 | 0.980
+
+    Accuracy Assessment  (evaluated on held-out 30% test set):
+      Overall Accuracy (OA) : 0.9851  (98.51%)
+      Kappa Coefficient     : 0.9790
+      CV Accuracy (mean)    : 0.9816 +/- 0.0060
+
+    Error Matrix  (rows = True class,  cols = Predicted class)
+      PA = Producer's Accuracy (Recall)   UA = User's Accuracy (Precision)
+      Class                      Water  VegetationUrban/Built-   Bare Soil      PA
+      ------------------------------------------------------------------------------
+      Water                        165           0           0           0  100.0%
+      Vegetation                     0         176           0           0  100.0%
+      Urban/Built-up                 1           6         150           0  95.5%
+      Bare Soil                      0           1           0          39  97.5%
+      ------------------------------------------------------------------------------
+      UA                         99.4%       96.2%      100.0%      100.0%
+
+    Per-class report (sklearn):
+                      precision    recall  f1-score   support
+      
+               Water       0.99      1.00      1.00       165
+          Vegetation       0.96      1.00      0.98       176
+      Urban/Built-up       1.00      0.96      0.98       157
+           Bare Soil       1.00      0.97      0.99        40
+      
+            accuracy                           0.99       538
+           macro avg       0.99      0.98      0.99       538
+        weighted avg       0.99      0.99      0.99       538
+
+4. RESOLUTION EFFECTS
+--------------------------------------------------
+
+  4.1  SPATIAL RESOLUTION
+    Landsat    : 0 m/pixel
+    Sentinel-2 : 0 m/pixel  (10/20/60 m by band)
+    Ratio      : Sentinel-2 is ~3.0x finer
+
+    Effect: Sentinel-2's finer pixels resolve small features
+    (field edges, roads, small water) that Landsat merges
+    into mixed pixels, reducing class separability.
+
+  4.2  SPECTRAL RESOLUTION
+    Landsat    : 4 bands (VNIR + SWIR + Thermal)
+    Sentinel-2 : 4 bands (VNIR + 3 Red-Edge + SWIR)
+
+    Effect: Sentinel-2's 3 Red-Edge bands (705-783 nm)
+    enable finer vegetation separation. Landsat's Thermal
+    bands (B10/B11) are unique - not available in Sentinel-2.
+
+  4.3  RADIOMETRIC RESOLUTION
+    Landsat    : 16-bit => 65,536 levels
+    Sentinel-2 : 12-bit =>  4,096 levels
+
+    Effect: Landsat's wider range avoids saturation on bright
+    targets. Sentinel-2 L2A is atmospherically corrected to
+    surface reflectance, improving index-based separation.
+
+5. CONCLUSION
+--------------------------------------------------
+
+  Landsat CV     : 0.9810  (98.10%)
+  Sentinel-2 CV  : 0.9816  (98.16%)
+  Better result  : Sentinel-2  (diff 0.06%)
+
+  - Sentinel-2 generally achieves higher accuracy for fine-scale
+    land-cover due to better spatial (10m) and spectral resolution.
+  - Landsat is essential for thermal analysis and long time-series.
+  - In homogeneous scenes the gap narrows; in heterogeneous scenes
+    (mixed agriculture/urban/forest) it widens substantially.
+  - Fusing both sensors typically maximises classification accuracy.
+
+====================================================================
