@@ -269,9 +269,31 @@ results/
 
 ## Alternative: Google Earth Engine (GEE) Version
 
-A secondary version of this classifier that runs **directly on Google Earth Engine** (no image download needed) will be added here once available.
+A Google Colab notebook (`gee_classifier.py`) is included in this repo as an alternative if you do not have locally downloaded satellite images. It pulls imagery directly from the GEE data catalogue and runs unsupervised K-Means classification entirely in the cloud.
 
-> 📌 **Coming soon** — the GEE script will be uploaded as `gee_classifier.js` (or a Colab notebook). It uses the same classification logic but pulls imagery directly from the GEE data catalogue, making it useful if you do not have locally downloaded satellite files.
+**How to use:**
+1. Open [Google Colab](https://colab.research.google.com)
+2. Upload `gee_classifier.py` or paste the code into a new notebook
+3. Run all cells — it will prompt you to authenticate with your Google Earth Engine account
+4. Set your ROI coordinates, date range, and number of clusters in the input panel
+5. Click **Run** — four synced interactive maps appear (Sentinel TCC, Landsat TCC, Sentinel classified, Landsat classified)
+
+**What it does differently from the main app:**
+
+| Feature | Main app (`satellite_classifier.py`) | GEE version (`gee_classifier.py`) |
+|---|---|---|
+| Data source | Local `.tif` files | GEE cloud catalogue |
+| Classification | Supervised + Unsupervised | Unsupervised (K-Means) only |
+| Interface | Desktop GUI (Tkinter) | Google Colab widgets |
+| Output | PNG maps + text report | Interactive synced maps |
+| Requires download | Yes | No |
+
+**Dependencies (auto-installed in Colab):**
+```
+geemap, earthengine-api, ipywidgets, rasterio
+```
+
+> You need a Google Earth Engine account to use this. Sign up free at [earthengine.google.com](https://earthengine.google.com). Change the `PROJECT_ID` variable at the top of the file to your own GEE project ID.
 
 ---
 
@@ -280,7 +302,8 @@ A secondary version of this classifier that runs **directly on Google Earth Engi
 ```
 .
 ├── satellite_classifier.py                   # Main application
-├── requirements.txt                          # Python dependencies
+├── gee_classifier.py                         # Google Colab / GEE alternative
+├── requirements.txt                          # Python dependencies (main app)
 ├── README.md                                 # This file
 ├── preview.png                               # Screenshot of the app UI
 ├── data/
@@ -330,4 +353,14 @@ Lowest per-class accuracy was **Bare Soil on Landsat (PA 94.1%)**, likely due to
 
 ---
 
-*Assignment submitted for [Course Name / Institution] — [Your Name] — [Date]*
+---
+
+## Team
+
+| Name | Institute |
+|---|---|
+| Nitish Kumar Singh | CSRE, IIT Bombay |
+| Sajay SS | CSRE, IIT Bombay |
+| Satyendranath Kar | CSRE, IIT Bombay |
+
+*Submitted for GNR 630 — CSRE, IIT Bombay — April 2026*
