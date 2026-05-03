@@ -360,7 +360,7 @@ Lowest per-class accuracy was **Bare Soil on Landsat (PA 94.1%)**, likely due to
 | Name | Institute |
 |---|---|
 | Nitish Kumar Singh | CSRE, IIT Bombay |
-| Sajay SS | CSRE, IIT Bombay |
+| Sajay SS | CIVIL ENGINEERING, IIT Bombay |
 | Satyendranath Kar | CSRE, IIT Bombay |
 
 *Submitted for GNR 630 — CSRE, IIT Bombay — April 2026*
